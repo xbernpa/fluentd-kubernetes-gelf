@@ -15,9 +15,12 @@ spec:
         version: v1
         kubernetes.io/cluster-service: "true"
     spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
       containers:
       - name: fluentd
-        image: xbernpa/fluentd-kubernetes-gelf
+        image: elasticio/fluentd-kubernetes-gelf
         env:
           - name: GELF_HOST 
             value: "host or ip"

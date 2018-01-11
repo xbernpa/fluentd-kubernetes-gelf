@@ -1,24 +1,26 @@
-FROM fluent/fluentd:latest
-MAINTAINER Pascal Bernier <xbernpa@ville.montreal.qc.ca>
+FROM fluent/fluentd:stable
+MAINTAINER Eugene Obrezkov <ghaiklor@gmail.com>
 USER root
 WORKDIR /home/fluent
 ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
 
+# Install prerequisites for fluentd
 RUN set -ex \
-    && apk add --no-cache --virtual .build-deps \
-        build-base \
-        ruby-dev \
+    && apk add --no-cache --virtual .build-deps build-base ruby-dev libffi-dev \
     && echo 'gem: --no-document' >> /etc/gemrc \
     && gem install fluent-plugin-secure-forward \
     && gem install fluent-plugin-record-reformer \
+    && gem install fluent-plugin-systemd -v 0.3.1 \
     && gem install fluent-plugin-gelf-hs \
     && gem install fluent-plugin-kubernetes_metadata_filter \
     && apk del .build-deps \
+    && gem sources --clear-all \
     && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
 
 # Copy configuration files
 COPY ./conf/fluent.conf /fluentd/etc/
 COPY ./conf/kubernetes.conf /fluentd/etc/
+COPY ./conf/systemd.conf /fluentd/etc/
 
 # Copy plugins
 COPY plugins /fluentd/plugins/
