@@ -16,6 +16,10 @@ RUN set -ex \
     && gem sources --clear-all \
     && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
 
+# Copy entrypoint.sh
+COPY ./bin/entrypoint.sh /bin/
+RUN chmod +x /bin/entrypoint.sh
+
 # Copy configuration files
 COPY ./conf/fluent.conf /fluentd/etc/
 COPY ./conf/kubernetes.conf /fluentd/etc/
@@ -33,4 +37,5 @@ ENV FLUENTD_CONF="fluent.conf"
 #ENV LD_PRELOAD="/usr/lib/libjemalloc.so.2"
 
 # Run Fluentd
-CMD exec fluentd -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT
+ENTRYPOINT ["/bin/entrypoint.sh"]
+CMD fluentd -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT
