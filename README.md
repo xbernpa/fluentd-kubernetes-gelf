@@ -1,41 +1,50 @@
-# Fluentd Kubernetes Gelf
+# Fluentd + Kubernetes + GELF
 
-![Fluentd Logo](http://www.fluentd.org/assets/img/miscellany/fluentd-logo.png)
-![Kubernetes Logo](https://sematext.com/wp-content/uploads/2016/11/kubernetes-logo.png)
-
-## Supported docker image
-
-- [`elasticio/fluentd-kubernetes-gelf`](https://hub.docker.com/r/elasticio/fluentd-kubernetes-gelf/)
+Link to Docker image - [`elasticio/fluentd-kubernetes-gelf`](https://hub.docker.com/r/elasticio/fluentd-kubernetes-gelf)
 
 ## What is Fluentd?
 
-Fluentd is an open source data collector, which lets you unify the data collection and consumption for a better use and understanding of data ([www.fluentd.org](http://www.fluentd.org/))
+Fluentd is an open source data collector, which lets you unify the data collection and consumption for a better use and understanding of data ([www.fluentd.org](http://www.fluentd.org))
 
 ## Image versions
 
-This image is based on the popular [Alpine Linux project][1], available in [the alpine official image][2].
+This image is based on the popular [Alpine Linux project](http://alpinelinux.org), available in [the alpine official image](https://hub.docker.com/_/alpine).
 Alpine Linux is much smaller than most distribution base images (~5MB), and
 thus leads to much slimmer images in general.
 
-[1]: http://alpinelinux.org
-[2]: https://hub.docker.com/_/alpine
+## Kubernetes DaemonSet
 
-### References
-
-[Kubernetes Logging with Fluentd][3]
-
-## Build docker image
-
-Based on the provided Dockerfile you can build and customize the docker image
-
-## Kubernetes daemonset
-
-To install the daemonset on your Kubernetes cluster adap the yaml example and simply:
+To install the DaemonSet on your Kubernetes cluster, use the `yaml` example, in the root of the repository, in console or upload it via Kubernetes Dashboard:
 
 ```
 kubectl create -f fluentd-daemonset-gelf.yaml
 ```
 
-[1]: http://alpinelinux.org
-[2]: https://hub.docker.com/_/alpine
-[3]: http://docs.fluentd.org/v0.12/articles/kubernetes-fluentd
+## Configuration
+
+### Graylog Endpoint
+
+Inside the descriptor for Kubernetes DaemonSet, you need to specify host, port and protocol:
+
+```yaml
+- name: GELF_HOST 
+  value: "<HOST>"
+- name: GELF_PORT
+  value: "<PORT>"
+- name: GELF_PROTOCOL
+  value: "{tcp,udp}"
+```
+
+### Fluentd Configuration
+
+All the inputs, transforms and outputs are configured in `./conf/kubernetes.conf` file.
+
+If you need to update something there, use the reference from Fluentd website or related plugin.
+
+## References
+
+- [Kubernetes Logging with Fluentd](http://docs.fluentd.org/v0.12/articles/kubernetes-fluentd)
+- [Input Plugin Overview](https://docs.fluentd.org/v1.0/articles/input-plugin-overview)
+- [Output Plugin Overview](https://docs.fluentd.org/v1.0/articles/output-plugin-overview)
+- [Plugin for GELF output](https://github.com/bodhi-space/fluent-plugin-gelf-hs)
+- [Plugin for Kubernetes Metadata](https://github.com/fabric8io/fluent-plugin-kubernetes_metadata_filter)
