@@ -1,4 +1,4 @@
-FROM fluent/fluentd:stable
+FROM fluent/fluentd:latest
 MAINTAINER Eugene Obrezkov <ghaiklor@gmail.com>
 USER root
 WORKDIR /home/fluent
