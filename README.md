@@ -1,5 +1,8 @@
 # Fluentd + Kubernetes + GELF
 
+_The repo was forked because of old images from the original author._
+_This fork is built from the latest fluentd images and has some fixes for running on the latest Kubernetes._
+
 Link to Docker image - [`elasticio/fluentd-kubernetes-gelf`](https://hub.docker.com/r/elasticio/fluentd-kubernetes-gelf)
 
 ## What is Fluentd?
