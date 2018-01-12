@@ -1,4 +1,4 @@
-FROM fluent/fluentd:latest
+FROM fluent/fluentd:stable
 MAINTAINER Eugene Obrezkov <ghaiklor@gmail.com>
 USER root
 WORKDIR /home/fluent
@@ -25,7 +25,7 @@ COPY ./conf/fluent.conf /fluentd/etc/
 COPY ./conf/kubernetes.conf /fluentd/etc/
 
 # Copy plugins
-COPY plugins /fluentd/plugins/
+COPY ./plugins/parser_kubernetes.rb /fluentd/plugins/
 
 # Environment variables
 ENV FLUENTD_OPT=""
