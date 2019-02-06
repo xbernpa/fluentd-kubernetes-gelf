@@ -12,6 +12,7 @@ RUN set -ex \
     && gem install fluent-plugin-json-transform -v 0.0.2 \
     && gem install fluent-plugin-mutate_filter -v 1.0.7 \
     && gem install fluent-plugin-gelf-hs -v 1.0.7 \
+    && gem install fluent-plugin-rewrite-tag-filter -v 2.1.1 \
     && apk del .build-deps \
     && gem sources --clear-all \
     && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
